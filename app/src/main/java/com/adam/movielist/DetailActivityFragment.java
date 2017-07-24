@@ -74,9 +74,9 @@ public class DetailActivityFragment extends Fragment {
             TextView tv = (TextView) rootView.findViewById(R.id.rating);
             tv.setText(rating);
         }
-        if(intent !=null && intent.hasExtra("date"))
+        if(intent !=null && intent.hasExtra("dates"))
         {
-            date = intent.getStringExtra("date");
+            date = intent.getStringExtra("dates");
             TextView tv = (TextView) rootView.findViewById(R.id.date);
             tv.setText(date);
 

@@ -20,7 +20,7 @@
                 android:layout_height="150dp"
                 android:paddingLeft = "20dp"
                 android:id ="@+id/title"
-                android:background = "#ff50ffc7"
+                android:background = "#a14294"
                 android:textSize= "35dp"
                 android:gravity = "center_vertical"
                 android:textColor="#ffffffff"
