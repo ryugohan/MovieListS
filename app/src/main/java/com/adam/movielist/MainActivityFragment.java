@@ -81,10 +81,11 @@ public class MainActivityFragment extends Fragment {
             gridview.setAdapter(adapter);
         }
         //listen for presses on gridview items
+
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println(position);
+                favorited = new ArrayList<Boolean>();
                 for(int i = 0; i<titles.size();i++)
                 {
                     favorited.add(false);
@@ -100,7 +101,6 @@ public class MainActivityFragment extends Fragment {
                         putExtra("comments",comments.get(position)).
                         putExtra("favorite",favorited.get(position));
                 startActivity(intent);
-
             }
         });
 
