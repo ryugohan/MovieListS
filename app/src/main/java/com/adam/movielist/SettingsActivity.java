@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
+    //fgfd
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
