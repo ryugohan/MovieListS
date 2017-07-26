@@ -97,7 +97,7 @@ public class DetailActivityFragment extends Fragment {
         }
         if(intent !=null && intent.hasExtra("youtube2"))
         {
-            youtube2 = intent.getStringExtra(youtube2);
+            youtube2 = intent.getStringExtra("youtube2");
         }
         if(intent !=null && intent.hasExtra("comments"))
         {

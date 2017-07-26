@@ -1,5 +1,6 @@
 package com.adam.movielist;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -52,15 +53,28 @@ public class DetailActivity extends AppCompatActivity {
         Button b = (Button)findViewById(R.id.favorite);
         if(b.getText().equals("FAVORITE"))
         {
-            //code to store movie data in database
             b.setText("UNFAVORITE");
             b.getBackground().setColorFilter(Color.CYAN, PorterDuff.Mode.MULTIPLY);
+
+            ContentValues values = new ContentValues();
+            values.put(MovieProvider.NAME,DetailActivityFragment.poster);
+            values.put(MovieProvider.OVERVIEW,DetailActivityFragment.overview);
+            values.put(MovieProvider.RATING,DetailActivityFragment.rating);
+            values.put(MovieProvider.DATE,DetailActivityFragment.date);
+            values.put(MovieProvider.REVIEW,DetailActivityFragment.review);
+            values.put(MovieProvider.YOUTUBE1,DetailActivityFragment.youtube);
+            values.put(MovieProvider.YOUTUBE2,DetailActivityFragment.youtube2);
+            values.put(MovieProvider.TITLE,DetailActivityFragment.title);
+
+            getContentResolver().insert(MovieProvider.CONTENT_URI, values);
 
         }
         else
         {
             b.setText("FAVORITE");
             b.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+            getContentResolver().delete(Uri.parse("content://com.adam.provider.Movies/movies"),
+                    "title=?",new String[]{DetailActivityFragment.title});
         }
     }
     public void trailer1(View v)

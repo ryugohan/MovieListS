@@ -3,9 +3,11 @@ package com.adam.movielist;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -44,7 +46,14 @@ public class MainActivityFragment extends Fragment {
     static PreferenceChangeListener listener;
     static SharedPreferences prefs;
     static boolean sortByFavorites;
-    static ArrayList<String> postersF = new ArrayList<String>();
+    static ArrayList<String> postersF;
+    static ArrayList<String> titlesF;
+    static ArrayList<String> datesF;
+    static ArrayList<String> ratingsF;
+    static ArrayList<String> youtubesF;
+    static ArrayList<String> youtubes2F;
+    static ArrayList<ArrayList<String>> commentsF;
+    static ArrayList<String> overviewsF;
     static ArrayList<String> overviews;
     static ArrayList<String> titles;
     static ArrayList<String> dates;
@@ -85,22 +94,34 @@ public class MainActivityFragment extends Fragment {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                favorited = new ArrayList<Boolean>();
-                for(int i = 0; i<titles.size();i++)
-                {
-                    favorited.add(false);
+                if(!sortByFavorites) {
+                    favorited = bindFavoritesToMovies();
+                    Intent intent = new Intent(getActivity(), DetailActivity.class).
+                            putExtra("overview", overviews.get(position)).
+                            putExtra("poster", posters.get(position)).
+                            putExtra("title", titles.get(position)).
+                            putExtra("dates", dates.get(position)).
+                            putExtra("rating", ratings.get(position)).
+                            putExtra("youtube", youtubes.get(position)).
+                            putExtra("youtube2", youtubes2.get(position)).
+                            putExtra("comments", comments.get(position)).
+                            putExtra("favorite", favorited.get(position));
+                    startActivity(intent);
                 }
-                Intent intent = new Intent(getActivity(),DetailActivity.class).
-                        putExtra("overview",overviews.get(position)).
-                        putExtra("poster", posters.get(position)).
-                        putExtra("title",titles.get(position)).
-                        putExtra("dates",dates.get(position)).
-                        putExtra("rating",ratings.get(position)).
-                        putExtra("youtube",youtubes.get(position)).
-                        putExtra("youtube2",youtubes2.get(position)).
-                        putExtra("comments",comments.get(position)).
-                        putExtra("favorite",favorited.get(position));
-                startActivity(intent);
+                else{
+                    Intent intent = new Intent(getActivity(), DetailActivity.class).
+                            putExtra("overview", overviewsF.get(position)).
+                            putExtra("poster", postersF.get(position)).
+                            putExtra("title", titlesF.get(position)).
+                            putExtra("dates", datesF.get(position)).
+                            putExtra("rating", ratingsF.get(position)).
+                            putExtra("youtube", youtubesF.get(position)).
+                            putExtra("youtube2", youtubes2F.get(position)).
+                            putExtra("comments", commentsF.get(position)).
+                            putExtra("favorite", favorited.get(position));
+                    startActivity(intent);
+
+                }
             }
         });
 
@@ -115,6 +136,25 @@ public class MainActivityFragment extends Fragment {
             gridview.setAdapter(null);
             onStart();
         }
+    }
+    public ArrayList<Boolean> bindFavoritesToMovies()
+    {
+        ArrayList<Boolean> result = new ArrayList<>();
+        for(int i =0; i<titles.size();i++)
+        {
+            result.add(false);
+        }
+        for(String favoritedTitles: titlesF)
+        {
+            for(int x = 0; x<titles.size(); x++)
+            {
+                if(favoritedTitles.equals(titles.get(x)))
+                {
+                    result.set(x,true);
+                }
+            }
+        }
+        return result;
     }
     @Override
     public void onStart()
@@ -144,6 +184,7 @@ public class MainActivityFragment extends Fragment {
         }
         TextView textView = new TextView(getActivity());
         LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.linearlayout);
+        loadFavoritesData();
         if(sortByFavorites)
         {
             if(postersF.size()==0)
@@ -183,6 +224,42 @@ public class MainActivityFragment extends Fragment {
             }
             gridview.setVisibility(GridView.GONE);
         }
+    }
+
+    public void loadFavoritesData()
+    {
+        String URL = "content://com.adam.provider.Movies/movies";
+        Uri movies = Uri.parse(URL);
+        Cursor c = getActivity().getContentResolver().query(movies,null,null,null,"title");
+        postersF = new ArrayList<String>();
+        titlesF = new ArrayList<String>();
+        datesF = new ArrayList<String>();
+        overviewsF = new ArrayList<String>();
+        favorited = new ArrayList<Boolean>();
+        commentsF = new ArrayList<ArrayList<String>>();
+        youtubesF = new ArrayList<String>();
+        youtubes2F = new ArrayList<String>();
+        ratingsF = new ArrayList<String>();
+        if(c==null) return;
+        while(c.moveToNext())
+        {
+            postersF.add(c.getString(c.getColumnIndex(MovieProvider.NAME)));
+            commentsF.add(convertStringToArrayList(c.getString(c.getColumnIndex(MovieProvider.REVIEW))));
+            titlesF.add(c.getString(c.getColumnIndex(MovieProvider.TITLE)));
+            overviewsF.add(c.getString(c.getColumnIndex(MovieProvider.OVERVIEW)));
+            youtubesF.add(c.getString(c.getColumnIndex(MovieProvider.YOUTUBE1)));
+            youtubes2F.add(c.getString(c.getColumnIndex(MovieProvider.YOUTUBE2)));
+            datesF.add(c.getString(c.getColumnIndex(MovieProvider.DATE)));
+            ratingsF.add(c.getString(c.getColumnIndex(MovieProvider.RATING)));
+            favorited.add(true);
+
+        }
+    }
+
+    public ArrayList<String> convertStringToArrayList(String s)
+    {
+        ArrayList<String> result = new ArrayList<>(Arrays.asList(s.split("divider123")));
+        return result;
     }
 
     public boolean isNetworkAvailable()
