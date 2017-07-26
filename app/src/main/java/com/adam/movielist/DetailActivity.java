@@ -54,7 +54,7 @@ public class DetailActivity extends AppCompatActivity {
         if(b.getText().equals("FAVORITE"))
         {
             b.setText("UNFAVORITE");
-            b.getBackground().setColorFilter(Color.CYAN, PorterDuff.Mode.MULTIPLY);
+            b.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
 
             ContentValues values = new ContentValues();
             values.put(MovieProvider.NAME,DetailActivityFragment.poster);

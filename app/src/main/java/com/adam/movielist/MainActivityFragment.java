@@ -144,11 +144,11 @@ public class MainActivityFragment extends Fragment {
         {
             result.add(false);
         }
-        for(String favoritedTitles: titlesF)
+        for(String favoriteTitles: titlesF)
         {
             for(int x = 0; x<titles.size(); x++)
             {
-                if(favoritedTitles.equals(titles.get(x)))
+                if(favoriteTitles.equals(titles.get(x)))
                 {
                     result.set(x,true);
                 }
@@ -178,7 +178,7 @@ public class MainActivityFragment extends Fragment {
         }
         else if(prefs.getString("sortby","popularity").equals("favorites"))
         {
-            getActivity().setTitle("Favorited Movies");
+            getActivity().setTitle("Favorite Movies");
             sortByPop = false;
             sortByFavorites=true;
         }

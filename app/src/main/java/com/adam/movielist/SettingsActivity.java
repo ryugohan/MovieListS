@@ -19,6 +19,8 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
 
 
 
+
+
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         String stringValue = newValue.toString();
