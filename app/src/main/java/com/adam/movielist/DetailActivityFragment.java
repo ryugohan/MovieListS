@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -28,6 +29,8 @@ import java.util.ArrayList;
  */
 public class DetailActivityFragment extends Fragment {
 
+    static GridView gridview;
+    static int width;
     public static String youtube;
     public static String youtube2;
     public static String overview;
@@ -35,6 +38,7 @@ public class DetailActivityFragment extends Fragment {
     public static String date;
     public static String review;
     public static String title;
+    public static String id;
     public static String poster;
     public static boolean favorite;
     public static ArrayList<String> comments;
@@ -74,9 +78,9 @@ public class DetailActivityFragment extends Fragment {
             TextView tv = (TextView) rootView.findViewById(R.id.rating);
             tv.setText(rating);
         }
-        if(intent !=null && intent.hasExtra("dates"))
+        if(intent !=null && intent.hasExtra("date"))
         {
-            date = intent.getStringExtra("dates");
+            date = intent.getStringExtra("date");
             TextView tv = (TextView) rootView.findViewById(R.id.date);
             tv.setText(date);
 
@@ -98,6 +102,7 @@ public class DetailActivityFragment extends Fragment {
         if(intent !=null && intent.hasExtra("youtube2"))
         {
             youtube2 = intent.getStringExtra("youtube2");
+
         }
         if(intent !=null && intent.hasExtra("comments"))
         {
@@ -145,7 +150,7 @@ public class DetailActivityFragment extends Fragment {
             else
             {
                 b.setText("UNFAVORITE");
-                b.getBackground().setColorFilter(Color.CYAN, PorterDuff.Mode.MULTIPLY);
+                b.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
             }
         }
 

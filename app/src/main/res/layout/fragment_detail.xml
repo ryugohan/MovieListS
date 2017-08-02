@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,7 +7,9 @@
     android:paddingRight="0dp"
     android:paddingTop="0dp"
     android:paddingBottom="0dp"
-    tools:context="com.adam.movielist.DetailActivityFragment">
+    tools:context="com.adam.movielist.DetailActivityFragment"
+    android:id = "@+id/linearlayout"
+    >
 
     <ScrollView
         android:layout_width="match_parent"
@@ -56,6 +58,18 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft = "5dp"
                 android:paddingRight = "0dp"
+                android:paddingTop = "15dp"
+                android:paddingBottom = "0dp"
+                android:id ="@+id/id"
+                android:layout_below = "@+id/title"
+                android:layout_toRightOf="@+id/poster"
+                android:textSize= "0dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft = "5dp"
+                android:paddingRight = "0dp"
                 android:paddingTop = "0dp"
                 android:paddingBottom = "5dp"
                 android:id ="@+id/rating"
@@ -77,6 +91,7 @@
                 android:gravity = "center"
                 android:onClick = "favorite"
                 />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -113,18 +128,19 @@
                     android:gravity = "center_vertical"
                     android:onClick = "trailer1"
                     />
+
                 <Button
+                    android:id="@+id/trailer2"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text = "Watch Trailer 2"
-                    android:paddingLeft = "15dp"
-                    android:paddingRight = "0dp"
-                    android:paddingTop = "0dp"
-                    android:paddingBottom = "0dp"
-                    android:id = "@+id/trailer2"
-                    android:gravity = "center_vertical"
-                    android:onClick = "trailer2"
-                    />
+                    android:gravity="center_vertical"
+                    android:onClick="trailer2"
+                    android:paddingBottom="0dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="0dp"
+                    android:paddingTop="0dp"
+                    android:text="Watch Trailer 2" />
+
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
@@ -139,6 +155,18 @@
                     android:paddingBottom = "15dp"
                     android:id ="@+id/reviews"/>
 
+                <GridView
+                    android:id="@+id/gridview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#cccccc"
+                    android:horizontalSpacing="0dp"
+                    android:numColumns="3"
+                    android:padding="0dp"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="0dp">
+
+                </GridView>
 
 
             </LinearLayout>
@@ -150,4 +178,4 @@
     </ScrollView>
 
 
-</RelativeLayout>
+</LinearLayout>

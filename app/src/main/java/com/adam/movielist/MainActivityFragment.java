@@ -46,7 +46,7 @@ public class MainActivityFragment extends Fragment {
     static PreferenceChangeListener listener;
     static SharedPreferences prefs;
     static boolean sortByFavorites;
-    static ArrayList<String> postersF;
+    static ArrayList<String> postersF = new ArrayList<String>();
     static ArrayList<String> titlesF;
     static ArrayList<String> datesF;
     static ArrayList<String> ratingsF;
@@ -56,6 +56,8 @@ public class MainActivityFragment extends Fragment {
     static ArrayList<String> overviewsF;
     static ArrayList<String> overviews;
     static ArrayList<String> titles;
+    static ArrayList<String> idsF;
+    static ArrayList<String> genre;
     static ArrayList<String> dates;
     static ArrayList<String> ratings;
     static ArrayList<String> youtubes;
@@ -90,40 +92,43 @@ public class MainActivityFragment extends Fragment {
             gridview.setAdapter(adapter);
         }
         //listen for presses on gridview items
-
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(!sortByFavorites) {
-                    favorited = bindFavoritesToMovies();
-                    Intent intent = new Intent(getActivity(), DetailActivity.class).
-                            putExtra("overview", overviews.get(position)).
-                            putExtra("poster", posters.get(position)).
-                            putExtra("title", titles.get(position)).
-                            putExtra("dates", dates.get(position)).
-                            putExtra("rating", ratings.get(position)).
-                            putExtra("youtube", youtubes.get(position)).
-                            putExtra("youtube2", youtubes2.get(position)).
-                            putExtra("comments", comments.get(position)).
-                            putExtra("favorite", favorited.get(position));
-                    startActivity(intent);
-                }
-                else{
-                    Intent intent = new Intent(getActivity(), DetailActivity.class).
-                            putExtra("overview", overviewsF.get(position)).
-                            putExtra("poster", postersF.get(position)).
-                            putExtra("title", titlesF.get(position)).
-                            putExtra("dates", datesF.get(position)).
-                            putExtra("rating", ratingsF.get(position)).
-                            putExtra("youtube", youtubesF.get(position)).
-                            putExtra("youtube2", youtubes2F.get(position)).
-                            putExtra("comments", commentsF.get(position)).
-                            putExtra("favorite", favorited.get(position));
-                    startActivity(intent);
+                                            @Override
+                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                if (!sortByFavorites) {
+                                                    favorited = bindFavoritesToMovies();
+                                                    Intent intent = new Intent(getActivity(), DetailActivity.class).
+                                                            putExtra("overview", overviews.get(position)).
+                                                            putExtra("poster", posters.get(position)).
+                                                            putExtra("title", titles.get(position)).
+                                                            putExtra("date", dates.get(position)).
+                                                            putExtra("rating", ratings.get(position)).
+                                                            putExtra("youtube", youtubes.get(position)).
+                                                            putExtra("youtube2", youtubes2.get(position)).
+                                                            putExtra("comments", comments.get(position)).
+                                                            putExtra("favorite", favorited.get(position));
 
-                }
-            }
-        });
+                                                    startActivity(intent);
+
+                                                }
+                                                else{
+                                                    Intent intent = new Intent(getActivity(), DetailActivity.class).
+                                                            putExtra("overview", overviewsF.get(position)).
+                                                            putExtra("poster", postersF.get(position)).
+                                                            putExtra("title", titlesF.get(position)).
+                                                            putExtra("date", datesF.get(position)).
+                                                            putExtra("rating", ratingsF.get(position)).
+                                                            putExtra("youtube", youtubesF.get(position)).
+                                                            putExtra("youtube2", youtubes2F.get(position)).
+                                                            putExtra("comments", commentsF.get(position)).
+                                                            putExtra("favorite", favorited.get(position));
+
+                                                    startActivity(intent);
+                                                }
+                                            }
+                                        }
+
+        );
 
 
         return rootView;
@@ -144,11 +149,11 @@ public class MainActivityFragment extends Fragment {
         {
             result.add(false);
         }
-        for(String favoriteTitles: titlesF)
+        for(String favoritedTitles: titlesF)
         {
             for(int x = 0; x<titles.size(); x++)
             {
-                if(favoriteTitles.equals(titles.get(x)))
+                if(favoritedTitles.equals(titles.get(x)))
                 {
                     result.set(x,true);
                 }
@@ -178,12 +183,12 @@ public class MainActivityFragment extends Fragment {
         }
         else if(prefs.getString("sortby","popularity").equals("favorites"))
         {
-            getActivity().setTitle("Favorite Movies");
+            getActivity().setTitle("Favorited Movies");
             sortByPop = false;
             sortByFavorites=true;
         }
         TextView textView = new TextView(getActivity());
-        LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.linearlayout);
+        LinearLayout layout = (LinearLayout)getActivity().findViewById(R.id.linearlayout);
         loadFavoritesData();
         if(sortByFavorites)
         {
@@ -204,28 +209,25 @@ public class MainActivityFragment extends Fragment {
                 gridview.setAdapter(adapter);
             }
         }
-        else{
+        else {
             gridview.setVisibility(GridView.VISIBLE);
             layout.removeView(textView);
-        }
 
-        if(isNetworkAvailable())
-        {
 
-            new ImageLoadTask().execute();
-        }
-        else{
-            TextView textview1 = new TextView(getActivity());
-            LinearLayout layout1 = (LinearLayout) getActivity().findViewById(R.id.linearlayout);
-            textview1.setText("You are not connected to the Internet");
-            if(layout1.getChildCount()==1)
-            {
-                layout1.addView(textview1);
+            if (isNetworkAvailable()) {
+
+                new ImageLoadTask().execute();
+            } else {
+                TextView textview1 = new TextView(getActivity());
+                LinearLayout layout1 = (LinearLayout) getActivity().findViewById(R.id.linearlayout);
+                textview1.setText("You are not connected to the Internet");
+                if (layout1.getChildCount() == 1) {
+                    layout1.addView(textview1);
+                }
+                gridview.setVisibility(GridView.GONE);
             }
-            gridview.setVisibility(GridView.GONE);
         }
     }
-
     public void loadFavoritesData()
     {
         String URL = "content://com.adam.provider.Movies/movies";
@@ -255,13 +257,11 @@ public class MainActivityFragment extends Fragment {
 
         }
     }
-
     public ArrayList<String> convertStringToArrayList(String s)
     {
         ArrayList<String> result = new ArrayList<>(Arrays.asList(s.split("divider123")));
         return result;
     }
-
     public boolean isNetworkAvailable()
     {
         ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -298,6 +298,7 @@ public class MainActivityFragment extends Fragment {
         {
             while(true)
             {
+
                 HttpURLConnection urlConnection = null;
                 BufferedReader reader = null;
                 String JSONResult;
@@ -332,17 +333,19 @@ public class MainActivityFragment extends Fragment {
 
                     try {
                         overviews = new ArrayList<String>(Arrays.asList(getStringsFromJSON(JSONResult,"overview")));
+
                         titles = new ArrayList<String>(Arrays.asList(getStringsFromJSON(JSONResult,"original_title")));
                         ratings = new ArrayList<String>(Arrays.asList(getStringsFromJSON(JSONResult,"vote_average")));
                         dates = new ArrayList<String>(Arrays.asList(getStringsFromJSON(JSONResult,"release_date")));
                         ids = new ArrayList<String>(Arrays.asList(getStringsFromJSON(JSONResult,"id")));
                         while(true)
                         {
-                            youtubes = new ArrayList<String>(Arrays.asList(getYoutubesFromIds(ids, 0)));
-                            youtubes2 = new ArrayList<String>(Arrays.asList(getYoutubesFromIds(ids, 1)));
+                            youtubes = new ArrayList<String>(Arrays.asList(getYoutubesFromIds(ids,0)));
+                            youtubes2 = new ArrayList<String>(Arrays.asList(getYoutubesFromIds(ids,1)));
                             int nullCount = 0;
-                            for (int i = 0; i < youtubes.size(); i++) {
-                                if (youtubes.get(i) == null)
+                            for(int i = 0; i<youtubes.size();i++)
+                            {
+                                if(youtubes.get(i)==null)
                                 {
                                     nullCount++;
                                     youtubes.set(i,"no video found");
@@ -359,11 +362,11 @@ public class MainActivityFragment extends Fragment {
                             if(nullCount>2)continue;
                             break;
                         }
-
                         comments = getReviewsFromIds(ids);
                         return getPathsFromJSON(JSONResult);
+
                     } catch (JSONException e) {
-                        return null;
+                        continue;
                     }
                 }catch(Exception e)
                 {
@@ -385,11 +388,13 @@ public class MainActivityFragment extends Fragment {
 
 
             }
-        }
 
-        public String[] getYoutubesFromIds(ArrayList<String> ids, int position) {
+        }
+        public String[] getYoutubesFromIds(ArrayList<String> ids, int position)
+        {
             String[] results = new String[ids.size()];
-            for (int i = 0; i < ids.size(); i++) {
+            for(int i =0; i<ids.size(); i++)
+            {
                 HttpURLConnection urlConnection = null;
                 BufferedReader reader = null;
                 String JSONResult;
@@ -439,40 +444,16 @@ public class MainActivityFragment extends Fragment {
                 }
             }
             return results;
-        }
 
-        public String getYoutubeFromJSON(String JSONStringParam, int position) throws JSONException
+        }
+        public ArrayList<ArrayList<String>> getReviewsFromIds(ArrayList<String> ids)
         {
-            JSONObject JSONString = new JSONObject(JSONStringParam);
-            JSONArray youtubesArray = JSONString.getJSONArray("results");
-            JSONObject youtube;
-            String result = "no videos found";
-            if(position ==0)
-            {
-                youtube = youtubesArray.getJSONObject(0);
-                result = youtube.getString("key");
-            }
-            else if(position==1)
-            {
-                if(youtubesArray.length()>1)
-                {
-                    youtube = youtubesArray.getJSONObject(1);
-                }
-                else{
-                    youtube = youtubesArray.getJSONObject(0);
-                }
-                result = youtube.getString("key");
-            }
-            return result;
-        }
-
-
-
-        public ArrayList<ArrayList<String>> getReviewsFromIds(ArrayList<String> ids) {
             outerloop:
-            while (true) {
+            while(true)
+            {
                 ArrayList<ArrayList<String>> results = new ArrayList<>();
-                for (int i = 0; i < ids.size(); i++) {
+                for(int i =0; i<ids.size(); i++)
+                {
                     HttpURLConnection urlConnection = null;
                     BufferedReader reader = null;
                     String JSONResult;
@@ -524,7 +505,6 @@ public class MainActivityFragment extends Fragment {
 
             }
         }
-
         public ArrayList<String> getCommentsFromJSON(String JSONStringParam)throws JSONException{
             JSONObject JSONString = new JSONObject(JSONStringParam);
             JSONArray reviewsArray = JSONString.getJSONArray("results");
@@ -542,9 +522,31 @@ public class MainActivityFragment extends Fragment {
             return results;
 
         }
-
-
-        public String[] getStringsFromJSON(String JSONStringParam, String param) throws JSONException
+        public String getYoutubeFromJSON(String JSONStringParam, int position) throws JSONException
+        {
+            JSONObject JSONString = new JSONObject(JSONStringParam);
+            JSONArray youtubesArray = JSONString.getJSONArray("results");
+            JSONObject youtube;
+            String result = "no videos found";
+            if(position ==0)
+            {
+                youtube = youtubesArray.getJSONObject(0);
+                result = youtube.getString("key");
+            }
+            else if(position==1)
+            {
+                if(youtubesArray.length()>1)
+                {
+                    youtube = youtubesArray.getJSONObject(1);
+                }
+                else{
+                    youtube = youtubesArray.getJSONObject(0);
+                }
+                result = youtube.getString("key");
+            }
+            return result;
+        }
+        public String[] getStringsFromJSON(String JSONStringParam, String param)  throws JSONException
         {
             JSONObject JSONString = new JSONObject(JSONStringParam);
 

@@ -14,6 +14,7 @@ import android.widget.Button;
 
 public class DetailActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +54,7 @@ public class DetailActivity extends AppCompatActivity {
         Button b = (Button)findViewById(R.id.favorite);
         if(b.getText().equals("FAVORITE"))
         {
+            //Set film to favorite
             b.setText("UNFAVORITE");
             b.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
 
@@ -71,18 +73,21 @@ public class DetailActivity extends AppCompatActivity {
         }
         else
         {
+            //removes film from favorite
             b.setText("FAVORITE");
             b.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
             getContentResolver().delete(Uri.parse("content://com.adam.provider.Movies/movies"),
                     "title=?",new String[]{DetailActivityFragment.title});
         }
     }
+    //plays trailer from youtube
     public void trailer1(View v)
     {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com" +
                 "/watch?v=" + DetailActivityFragment.youtube));
         startActivity(browserIntent);
     }
+    //plays trailer from youtube
     public void trailer2(View v)
     {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com" +

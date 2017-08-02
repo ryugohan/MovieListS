@@ -4,10 +4,9 @@
     <string name="action_settings">Settings</string>
     <string name="right_button">Next</string>
     <string name="left_button">Prev</string>
+    <string name="share">Share</string>
     <string name="title_activity_settings">SettingsActivity</string>
-    <string name="rating">rating</string>
-    <string name="popularity">popularity</string>
-    <string name="favorites">favorites</string>
+
 
     <string-array name="pref_entries" translatable="false">
         <item>Popularity</item>
@@ -15,9 +14,41 @@
         <item>Favorites</item>
     </string-array>
     <string-array name="pref_values" translatable="false">
-        <item>populrity</item>
+        <item>popularity</item>
         <item>rating</item>
         <item>favorites</item>
+    </string-array>
+
+
+    <string-array name="genre_entries" translatable="false">
+        <item>Action</item>
+        <item>Adventure</item>
+        <item>Animation</item>
+        <item>Comedy</item>
+        <item>Crime</item>
+        <item>Drama</item>
+        <item>Family</item>
+        <item>Fantasy</item>
+        <item>Horror</item>
+        <item>Romance</item>
+        <item>Science Fiction</item>
+        <item>War</item>
+        <item>Western</item>
+    </string-array>
+    <string-array name="genre_values" translatable="false">
+        <item>with_genres=28</item>
+        <item>with_genres12</item>
+        <item>with_genres16</item>
+        <item>with_genres35</item>
+        <item>with_genres80</item>
+        <item>with_genres18</item>
+        <item>with_genres10751</item>
+        <item>with_genres14</item>
+        <item>with_genres27</item>
+        <item>with_genres10749</item>
+        <item>with_genres878</item>
+        <item>with_genres10752</item>
+        <item>with_genres37</item>
     </string-array>
     <string name="title_activity_detail">DetailActivity</string>
 </resources>
